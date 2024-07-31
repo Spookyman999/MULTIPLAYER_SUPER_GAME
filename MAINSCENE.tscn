@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://djqfurcocfi81"]
+
+[ext_resource type="PackedScene" uid="uid://bkauk4fwxw5bd" path="res://player_main.tscn" id="1_qyjtr"]
+[ext_resource type="Script" path="res://TextEdit.gd" id="2_dwjh1"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_x7d7a"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6egjf"]
+sky_material = SubResource("ProceduralSkyMaterial_x7d7a")
+
+[sub_resource type="Environment" id="Environment_7h2ln"]
+background_mode = 2
+sky = SubResource("Sky_6egjf")
+tonemap_mode = 2
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_1ohyw"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_7h2ln")
+
+[node name="Player_Main" parent="." instance=ExtResource("1_qyjtr")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.47687, 0)
+shape = SubResource("WorldBoundaryShape3D_1ohyw")
+
+[node name="TextEdit" type="TextEdit" parent="."]
+offset_right = 222.0
+offset_bottom = 103.0
+script = ExtResource("2_dwjh1")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.957229, 0.289333, 0, -0.289333, 0.957229, 0, 1.89796, 4.28407)
+
+[connection signal="property_list_changed" from="Player_Main" to="TextEdit" method="_on_player_main_property_list_changed"]
